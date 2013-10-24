@@ -7,14 +7,14 @@ my::unique_ptr<T>::unique_ptr()
 }
 
 template <class T>
-my::unique_ptr<T>::unique_ptr(T * const p)
+my::unique_ptr<T>::unique_ptr(T * const p):pointer(p)
 {
-    pointer = p; //должны ли мы удалять p??? или пусть живет?
 }
 
 template <class T>
 my::unique_ptr<T>::unique_ptr(my::unique_ptr<T> &&x)
 {
+    reset(NULL);
     std::swap(x.pointer, pointer);
 //    reset(x.pointer);
 //    x.release();
