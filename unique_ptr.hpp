@@ -12,12 +12,9 @@ my::unique_ptr<T>::unique_ptr(T * const p):pointer(p)
 }
 
 template <class T>
-my::unique_ptr<T>::unique_ptr(my::unique_ptr<T> &&x)
+my::unique_ptr<T>::unique_ptr(my::unique_ptr<T> &&x): pointer(x.pointer)
 {
-    reset(NULL);
-    std::swap(x.pointer, pointer);
-//    reset(x.pointer);
-//    x.release();
+    x.release();
 }
 
 template <class T>
@@ -64,6 +61,7 @@ template <class T>
 void my::unique_ptr<T>::operator =(my::unique_ptr<T> &&x)
 {
     pointer = x.pointer;
+    x.release();
 }
 
 template <class T>

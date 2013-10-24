@@ -16,7 +16,13 @@ int main()
     *b = 10;
     {
         my::unique_ptr<int> p4(b);
-        p1 =  move(p4);
+        if (p4.get() != NULL)
+            cout << "No NULL " << *p4 << endl;
+        else cout << "fuck!!!" << endl;
+        p1 = move(p4);
+        if (p4.get() != NULL)
+            cout << "No NULL " << *p4 << endl;
+        else cout << "fuck!!!" << endl;
     }
     if (p1.get() != NULL)
         cout << "No NULL " << *p1 << endl;
