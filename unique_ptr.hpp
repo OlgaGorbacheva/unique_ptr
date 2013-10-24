@@ -9,20 +9,21 @@ my::unique_ptr<T>::unique_ptr()
 template <class T>
 my::unique_ptr<T>::unique_ptr(T * const p)
 {
-    pointer = *p;
+    pointer = p; //должны ли мы удалять p??? или пусть живет?
 }
 
 template <class T>
 my::unique_ptr<T>::unique_ptr(my::unique_ptr<T> &&x)
 {
-    pointer = x.pointer;
+    std::swap(x.pointer, pointer);
+//    reset(x.pointer);
+//    x.release();
 }
 
 template <class T>
 my::unique_ptr<T>::~unique_ptr()
 {
-    if (pointer != NULL)
-        delete pointer;
+    reset(NULL);
 }
 
 template <class T>
@@ -32,13 +33,13 @@ T & my::unique_ptr<T>::operator *()
 }
 
 template <class T>
-T & my::unique_ptr<T>::operator ->()
+T * my::unique_ptr<T>::operator ->()
 {
-    return *(pointer);
+    return * pointer;
 }
 
 template <class T>
-T * my::unique_ptr<T>::release ()
+T * my::unique_ptr<T>::release()
 {
     T *p = pointer;
     pointer = NULL;
@@ -48,12 +49,13 @@ T * my::unique_ptr<T>::release ()
 template <class T>
 void my::unique_ptr<T>::reset(T * const p)
 {
-    delete pointer;
+    if (pointer != NULL)
+        delete pointer;
     pointer = p;
 }
 
 template <class T>
-T * my::unique_ptr<T>::get ()
+T * my::unique_ptr<T>::get()
 {
     return pointer;
 }
@@ -67,5 +69,5 @@ void my::unique_ptr<T>::operator =(my::unique_ptr<T> &&x)
 template <class T>
 void my::unique_ptr<T>::operator =(T * const x)
 {
-    pointer = x;
+    reset(x);
 }

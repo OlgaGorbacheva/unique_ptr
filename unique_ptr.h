@@ -2,6 +2,7 @@
 #define UNIQUE_PTR_H
 
 #include <memory>
+#include <utility>
 
 //#define NULL 0;
 
@@ -26,7 +27,7 @@ public:
     ~unique_ptr();
 
     T & operator *();
-    T & operator ->();
+    T * operator ->();
     void operator =(my::unique_ptr<T> &&x);
     void operator =(my::unique_ptr<T> &x) = delete;
     void operator =(T * const x);
